@@ -1,4 +1,5 @@
-#include "nm_mblock.h"   
+#include "nm_mblock.h"
+#include "nm_command.h"
 
 // 手指
 void setFinger(FingerNumber fingerNum, uint8_t position) {
@@ -30,13 +31,76 @@ void setAllFinger(uint8_t pos1, uint8_t pos2, uint8_t pos3, uint8_t pos4, uint8_
   setFingerControl(&fingerControl);
 }
 
-// 手势控制
+// 直接使用手指动作指令替换手势控制提高实时响应
 void setGesture(GestureNumber gestureNum, uint8_t position) {
-  GestureControl control;
-  control.no = gestureNum;
-  control.pos = position;
+  // GestureControl control;
+  // control.no = gestureNum;
+  // control.pos = position;
+  // setGestureControl(&control);
 
-  setGestureControl(&control);
+  uint8_t  pos[5] ={0};
+  FingerControl fingerControl;
+  switch(gestureNum) {
+    case GestureNumber::Reset:
+    break;
+    case GestureNumber::Pinch: // 捏取
+      pos[0] = 40;
+      pos[1] = 65;
+    break;
+    case GestureNumber::Grasp:
+      pos[0] = 40;
+      pos[1] = 65;
+      pos[2] = 75;
+    break;
+    case GestureNumber::SidePinch:
+      pos[0] = 100;
+      pos[1] = 100;
+      pos[2] = 100;
+      pos[3] = 100;
+      pos[4] = 100;
+    break;
+    case GestureNumber::Tripod:
+      pos[0] = 0;
+      pos[1] = 100;
+      pos[2] = 100;
+      pos[3] = 100;
+      pos[4] = 100;
+    break;
+    case GestureNumber::Wave:
+      pos[0] = 100;
+      pos[1] = 0;
+      pos[2] = 100;
+      pos[3] = 0;
+      pos[4] = 100;
+    break; 
+    case GestureNumber::Scissors:
+      pos[0] = 100;
+      pos[1] = 0;
+      pos[2] = 0;
+      pos[3] = 100;
+      pos[4] = 100;
+    break;
+    case GestureNumber::Rock:
+      pos[0] = 100;
+      pos[1] = 100;
+      pos[2] = 100;
+      pos[3] = 100;
+      pos[4] = 100;
+    break;
+    case GestureNumber::Paper:
+      pos[0] = 0;
+      pos[1] = 0;
+      pos[2] = 0;
+      pos[3] = 0;
+      pos[4] = 0;
+    break;
+    default:break;
+  }
+  for (int fin = 0; fin < 5; fin++) {
+    fingerControl.pos[fin] = pos[fin] + 1;
+  }
+
+  setFingerControl(&fingerControl);
 }
 
 // 封装 setLedControl 函数调用代码
