@@ -38,10 +38,18 @@ Every hour, the automated Library Manager indexer system:
 ## Lint
 
 ```sh
+sudo curl -fsSL https://raw.githubusercontent.com/arduino/arduino-lint/main/etc/install.sh | BINDIR=~/local/bin sh
+export PATH=$PATH:~/local/bin
 arduino-lint --recursive --library-manager submit
-arduino-lint --recursive --library-manager update
+
 arduino-lint --compliance strict
 arduino-cli lib search NeuroMaster
 https://downloads.arduino.cc/libraries/logs/github.com/arduino-libraries/Servo/
 https://downloads.arduino.cc/libraries/logs/github.com/BrainCoTech/brain_arduino/
+
+# Update
+https://github.com/BrainCoTech/brain_arduino/
+arduino-lint --recursive --library-manager update
+git tag v0.0.7  # 使用新的版本号创建标签
+git push origin v0.0.7  # 推送标签到远程仓库
 ```
